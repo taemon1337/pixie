@@ -1,0 +1,13 @@
+#!/bin/sh
+apk add --no-cache git
+
+packages="go.universe.tf/netboot/cmd/pixiecore golang.org/x/crypto/nacl/secretbox golang.org/x/net/bpf golang.org/x/net/ipv4 golang.org/x/net/ipv6 github.com/spf13/cobra github.com/spf13/viper"
+
+for package in ${packages}; do
+  if [ ! -d ${GOPATH}/$package ]; then
+    go get $package
+  fi
+done
+
+GOOS=linux GOARCH=mipsle go build go.universe.tf/netboot/cmd/pixiecore
+mv pixiecore /go/bin/
